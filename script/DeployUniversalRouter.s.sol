@@ -53,8 +53,8 @@ abstract contract DeployUniversalRouter is Script {
             routerRewardsDistributor: mapUnsupported(params.routerRewardsDistributor),
             looksRareRewardsDistributor: mapUnsupported(params.looksRareRewardsDistributor),
             looksRareToken: mapUnsupported(params.looksRareToken),
+            v1Factory: mapUnsupported(params.v1Factory),
             v2Factory: mapUnsupported(params.v2Factory),
-            v3Factory: mapUnsupported(params.v3Factory),
             pairInitCodeHash: params.pairInitCodeHash,
             poolInitCodeHash: params.poolInitCodeHash
         });
@@ -83,8 +83,8 @@ abstract contract DeployUniversalRouter is Script {
         console2.log('routerRewardsDistributor:', params.routerRewardsDistributor);
         console2.log('looksRareRewardsDistributor:', params.looksRareRewardsDistributor);
         console2.log('looksRareToken:', params.looksRareToken);
+        console2.log('v1Factory:', params.v1Factory);
         console2.log('v2Factory:', params.v2Factory);
-        console2.log('v3Factory:', params.v3Factory);
     }
 
     function mapUnsupported(address protocol) internal view returns (address) {

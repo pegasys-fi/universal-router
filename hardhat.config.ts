@@ -32,36 +32,10 @@ export default {
         blockNumber: 15360000,
       },
     },
-    mainnet: {
-      url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
-    },
-    ropsten: {
-      url: `https://ropsten.infura.io/v3/${process.env.INFURA_API_KEY}`,
-    },
-    rinkeby: {
-      url: `https://rinkeby.infura.io/v3/${process.env.INFURA_API_KEY}`,
-    },
-    goerli: {
-      url: `https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`,
-    },
-    kovan: {
-      url: `https://kovan.infura.io/v3/${process.env.INFURA_API_KEY}`,
-    },
-    arbitrumRinkeby: {
-      url: `https://rinkeby.arbitrum.io/rpc`,
-    },
-    arbitrum: {
-      url: `https://arb1.arbitrum.io/rpc`,
-    },
-    optimismKovan: {
-      url: `https://kovan.optimism.io`,
-    },
-    optimism: {
-      url: `https://mainnet.optimism.io`,
-    },
-    polygon: {
-      url: `https://polygon-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
-    },
+    // rollux: {
+    //   url: `https://rpc-tanenbaum.rollux.com/`,
+    //   accounts: [process.env.PRIVATE_KEY],
+    // },
   },
   namedAccounts: {
     deployer: 0,

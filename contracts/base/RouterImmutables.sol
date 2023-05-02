@@ -22,8 +22,8 @@ struct RouterParameters {
     address routerRewardsDistributor;
     address looksRareRewardsDistributor;
     address looksRareToken;
+    address v1Factory;
     address v2Factory;
-    address v3Factory;
     bytes32 pairInitCodeHash;
     bytes32 poolInitCodeHash;
 }
@@ -79,17 +79,17 @@ contract RouterImmutables {
     /// @dev The address of router rewards distributor
     address internal immutable ROUTER_REWARDS_DISTRIBUTOR;
 
-    /// @dev The address of UniswapV2Factory
+    /// @dev The address of PegasysV1Factory
+    address internal immutable UNISWAP_V1_FACTORY;
+
+    /// @dev The PegasysV1Pair initcodehash
+    bytes32 internal immutable UNISWAP_V1_PAIR_INIT_CODE_HASH;
+
+    /// @dev The address of PegasysV1Factory
     address internal immutable UNISWAP_V2_FACTORY;
 
-    /// @dev The UniswapV2Pair initcodehash
-    bytes32 internal immutable UNISWAP_V2_PAIR_INIT_CODE_HASH;
-
-    /// @dev The address of UniswapV3Factory
-    address internal immutable UNISWAP_V3_FACTORY;
-
-    /// @dev The UniswapV3Pool initcodehash
-    bytes32 internal immutable UNISWAP_V3_POOL_INIT_CODE_HASH;
+    /// @dev The PegasysV1Pool initcodehash
+    bytes32 internal immutable UNISWAP_V2_POOL_INIT_CODE_HASH;
 
     enum Spenders {
         OSConduit,
@@ -113,9 +113,9 @@ contract RouterImmutables {
         LOOKS_RARE_TOKEN = ERC20(params.looksRareToken);
         LOOKS_RARE_REWARDS_DISTRIBUTOR = params.looksRareRewardsDistributor;
         ROUTER_REWARDS_DISTRIBUTOR = params.routerRewardsDistributor;
+        UNISWAP_V1_FACTORY = params.v1Factory;
+        UNISWAP_V1_PAIR_INIT_CODE_HASH = params.pairInitCodeHash;
         UNISWAP_V2_FACTORY = params.v2Factory;
-        UNISWAP_V2_PAIR_INIT_CODE_HASH = params.pairInitCodeHash;
-        UNISWAP_V3_FACTORY = params.v3Factory;
-        UNISWAP_V3_POOL_INIT_CODE_HASH = params.poolInitCodeHash;
+        UNISWAP_V2_POOL_INIT_CODE_HASH = params.poolInitCodeHash;
     }
 }
