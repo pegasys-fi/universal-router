@@ -5,7 +5,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": [
     "pegasys",
     "router",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@pollum-io/pegasys-protocol": "0.0.17",
-    "@pollum-io/v2-core": "0.0.1",
+    "@pollum-io/v2-core": "0.0.3",
     "@openzeppelin/contracts": "4.7.0"
   },
   "devDependencies": {
@@ -41,11 +41,11 @@
     "@typechain/ethers-v5": "^4.0.0",
     "@types/chai": "^4.2.6",
     "@types/mocha": "^5.2.7",
-    "@pollum-io/router-sdk": "0.0.1",
-    "@pollum-io/sdk-core": "0.0.2",
+    "@pollum-io/router-sdk": "0.0.2",
+    "@pollum-io/sdk-core": "0.0.3",
     "@uniswap/snapshot-gas-cost": "^1.0.0",
-    "@pollum-io/v1-sdk": "0.0.1",
-    "@pollum-io/v2-sdk": "0.0.1",
+    "@pollum-io/v1-sdk": "0.0.2",
+    "@pollum-io/v2-sdk": "0.0.2",
     "bignumber.js": "^9.0.0",
     "chai": "^4.3.4",
     "ethers": "^5.7.2",
