@@ -7,7 +7,7 @@ import {RouterParameters} from 'contracts/base/RouterImmutables.sol';
 contract DeployRollux is DeployUniversalRouter {
     function setUp() public override {
         params = RouterParameters({
-            permit2: 0xA4f6261a5F45928b79d2d5ED22373e4D4d637C47,
+            permit2: 0x000000000022D473030F116dDEE9F6B43aC78BA3,
             weth9: 0x4200000000000000000000000000000000000006,
             seaportV1_5: UNSUPPORTED_PROTOCOL,
             seaportV1_4: UNSUPPORTED_PROTOCOL,
@@ -24,11 +24,11 @@ contract DeployRollux is DeployUniversalRouter {
             looksRareRewardsDistributor: UNSUPPORTED_PROTOCOL,
             looksRareToken: UNSUPPORTED_PROTOCOL,
             v1Factory: UNSUPPORTED_PROTOCOL,
-            v2Factory: 0x84dfc5dCE8F4Fa28B6A67C79373e8650854b7B16,
+            v3Factory: 0xeAa20BEA58979386A7d37BAeb4C1522892c74640,
             pairInitCodeHash: BYTES32_ZERO,
-            poolInitCodeHash: 0x8e96f21651a78ab0d329ff44bdd6d00fac90998fc170340ad5301cb752dab5d2
+            poolInitCodeHash: 0x4a995152ad4a45ce61f15e514146bc642453130f5c3ef14b85098e9c6266c43d
         });
 
-        unsupported = 0xb5c5c8904b38E9A2b721DCF0935A631E01b1E429;
+        unsupported = address(0);
     }
 }

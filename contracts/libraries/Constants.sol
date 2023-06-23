@@ -26,15 +26,15 @@ library Constants {
     uint256 internal constant ADDR_SIZE = 20;
 
     /// @dev The length of the bytes encoded fee
-    uint256 internal constant V2_FEE_SIZE = 3;
+    uint256 internal constant V3_FEE_SIZE = 3;
 
     /// @dev The offset of a single token address (20) and pool fee (3)
-    uint256 internal constant NEXT_V2_POOL_OFFSET = ADDR_SIZE + V2_FEE_SIZE;
+    uint256 internal constant NEXT_V3_POOL_OFFSET = ADDR_SIZE + V3_FEE_SIZE;
 
     /// @dev The offset of an encoded pool key
     /// Token (20) + Fee (3) + Token (20) = 43
-    uint256 internal constant V2_POP_OFFSET = NEXT_V2_POOL_OFFSET + ADDR_SIZE;
+    uint256 internal constant V3_POP_OFFSET = NEXT_V3_POOL_OFFSET + ADDR_SIZE;
 
     /// @dev The minimum length of an encoding that contains 2 or more pools
-    uint256 internal constant MULTIPLE_V2_POOLS_MIN_LENGTH = V2_POP_OFFSET + NEXT_V2_POOL_OFFSET;
+    uint256 internal constant MULTIPLE_V3_POOLS_MIN_LENGTH = V3_POP_OFFSET + NEXT_V3_POOL_OFFSET;
 }

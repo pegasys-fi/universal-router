@@ -37,8 +37,8 @@ abstract contract V1SwapRouter is RouterImmutables, Permit2Payments {
                 address nextPair;
                 (nextPair, token0) = i < penultimatePairIndex
                     ? PegasysV1Library.pairAndToken0For(
-                        UNISWAP_V1_FACTORY,
-                        UNISWAP_V1_PAIR_INIT_CODE_HASH,
+                        PEGASYS_V1_FACTORY,
+                        PEGASYS_V1_PAIR_INIT_CODE_HASH,
                         output,
                         path[i + 2]
                     )
@@ -63,8 +63,8 @@ abstract contract V1SwapRouter is RouterImmutables, Permit2Payments {
         address payer
     ) internal {
         address firstPair = PegasysV1Library.pairFor(
-            UNISWAP_V1_FACTORY,
-            UNISWAP_V1_PAIR_INIT_CODE_HASH,
+            PEGASYS_V1_FACTORY,
+            PEGASYS_V1_PAIR_INIT_CODE_HASH,
             path[0],
             path[1]
         );
@@ -97,8 +97,8 @@ abstract contract V1SwapRouter is RouterImmutables, Permit2Payments {
         address payer
     ) internal {
         (uint256 amountIn, address firstPair) = PegasysV1Library.getAmountInMultihop(
-            UNISWAP_V1_FACTORY,
-            UNISWAP_V1_PAIR_INIT_CODE_HASH,
+            PEGASYS_V1_FACTORY,
+            PEGASYS_V1_PAIR_INIT_CODE_HASH,
             amountOut,
             path
         );

@@ -1,28 +1,28 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.8.17;
 
-import {V2Path} from './V2Path.sol';
+import {V3Path} from './V3Path.sol';
 import {BytesLib} from './BytesLib.sol';
-import {SafeCast} from '@pollum-io/v2-core/contracts/libraries/SafeCast.sol';
-import {IPegasysV2Pool} from '@pollum-io/v2-core/contracts/interfaces/IPegasysV2Pool.sol';
-import {IPegasysV2SwapCallback} from '@pollum-io/v2-core/contracts/interfaces/callback/IPegasysV2SwapCallback.sol';
+import {SafeCast} from '@pollum-io/v3-core/contracts/libraries/SafeCast.sol';
+import {IPegasysV3Pool} from '@pollum-io/v3-core/contracts/interfaces/IPegasysV3Pool.sol';
+import {IPegasysV3SwapCallback} from '@pollum-io/v3-core/contracts/interfaces/callback/IPegasysV3SwapCallback.sol';
 import {Constants} from '../../../libraries/Constants.sol';
 import {RouterImmutables} from '../../../base/RouterImmutables.sol';
 import {Permit2Payments} from '../../Permit2Payments.sol';
 import {Constants} from '../../../libraries/Constants.sol';
 import {ERC20} from 'solmate/src/tokens/ERC20.sol';
 
-/// @title Router for Pegasys v2 Trades
-abstract contract V2SwapRouter is RouterImmutables, Permit2Payments, IPegasysV2SwapCallback {
-    using V2Path for bytes;
+/// @title Router for Pegasys v3 Trades
+abstract contract V3SwapRouter is RouterImmutables, Permit2Payments, IPegasysV3SwapCallback {
+    using V3Path for bytes;
     using BytesLib for bytes;
     using SafeCast for uint256;
 
-    error V2InvalidSwap();
-    error V2TooLittleReceived();
-    error V2TooMuchRequested();
-    error V2InvalidAmountOut();
-    error V2InvalidCaller();
+    error V3InvalidSwap();
+    error V3TooLittleReceived();
+    error V3TooMuchRequested();
+    error V3InvalidAmountOut();
+    error V3InvalidCaller();
 
     /// @dev Used as the placeholder value for maxAmountIn, because the computed amount in for an exact output swap
     /// can never actually be this value
@@ -37,15 +37,15 @@ abstract contract V2SwapRouter is RouterImmutables, Permit2Payments, IPegasysV2S
     /// @dev The maximum value that can be returned from #getSqrtRatioAtTick. Equivalent to getSqrtRatioAtTick(MAX_TICK)
     uint160 internal constant MAX_SQRT_RATIO = 1461446703485210103287273052203988822378723970342;
 
-    function pegasysV2SwapCallback(int256 amount0Delta, int256 amount1Delta, bytes calldata data) external {
-        if (amount0Delta <= 0 && amount1Delta <= 0) revert V2InvalidSwap(); // swaps entirely within 0-liquidity regions are not supported
+    function pegasysV3SwapCallback(int256 amount0Delta, int256 amount1Delta, bytes calldata data) external {
+        if (amount0Delta <= 0 && amount1Delta <= 0) revert V3InvalidSwap(); // swaps entirely within 0-liquidity regions are not supported
         (, address payer) = abi.decode(data, (bytes, address));
         bytes calldata path = data.toBytes(0);
 
         // because exact output swaps are executed in reverse order, in this case tokenOut is actually tokenIn
         (address tokenIn, uint24 fee, address tokenOut) = path.decodeFirstPool();
 
-        if (computePoolAddress(tokenIn, tokenOut, fee) != msg.sender) revert V2InvalidCaller();
+        if (computePoolAddress(tokenIn, tokenOut, fee) != msg.sender) revert V3InvalidCaller();
 
         (bool isExactInput, uint256 amountToPay) = amount0Delta > 0
             ? (tokenIn < tokenOut, uint256(amount0Delta))
@@ -61,20 +61,20 @@ abstract contract V2SwapRouter is RouterImmutables, Permit2Payments, IPegasysV2S
                 path = path.skipToken();
                 _swap(-amountToPay.toInt256(), msg.sender, path, payer, false);
             } else {
-                if (amountToPay > maxAmountInCached) revert V2TooMuchRequested();
+                if (amountToPay > maxAmountInCached) revert V3TooMuchRequested();
                 // note that because exact output swaps are executed in reverse order, tokenOut is actually tokenIn
                 payOrPermit2Transfer(tokenOut, payer, msg.sender, amountToPay);
             }
         }
     }
 
-    /// @notice Performs a Pegasys v2 exact input swap
+    /// @notice Performs a Pegasys v3 exact input swap
     /// @param recipient The recipient of the output tokens
     /// @param amountIn The amount of input tokens for the trade
     /// @param amountOutMinimum The minimum desired amount of output tokens
     /// @param path The path of the trade as a bytes string
     /// @param payer The address that will be paying the input
-    function v2SwapExactInput(
+    function v3SwapExactInput(
         address recipient,
         uint256 amountIn,
         uint256 amountOutMinimum,
@@ -112,16 +112,16 @@ abstract contract V2SwapRouter is RouterImmutables, Permit2Payments, IPegasysV2S
             }
         }
 
-        if (amountOut < amountOutMinimum) revert V2TooLittleReceived();
+        if (amountOut < amountOutMinimum) revert V3TooLittleReceived();
     }
 
-    /// @notice Performs a Pegasys v2 exact output swap
+    /// @notice Performs a Pegasys v3 exact output swap
     /// @param recipient The recipient of the output tokens
     /// @param amountOut The amount of output tokens to receive for the trade
     /// @param amountInMaximum The maximum desired amount of input tokens
     /// @param path The path of the trade as a bytes string
     /// @param payer The address that will be paying the input
-    function v2SwapExactOutput(
+    function v3SwapExactOutput(
         address recipient,
         uint256 amountOut,
         uint256 amountInMaximum,
@@ -139,7 +139,7 @@ abstract contract V2SwapRouter is RouterImmutables, Permit2Payments, IPegasysV2S
 
         uint256 amountOutReceived = zeroForOne ? uint256(-amount1Delta) : uint256(-amount0Delta);
 
-        if (amountOutReceived != amountOut) revert V2InvalidAmountOut();
+        if (amountOutReceived != amountOut) revert V3InvalidAmountOut();
 
         maxAmountInCached = DEFAULT_MAX_AMOUNT_IN;
     }
@@ -157,7 +157,7 @@ abstract contract V2SwapRouter is RouterImmutables, Permit2Payments, IPegasysV2S
 
         zeroForOne = isExactIn ? tokenIn < tokenOut : tokenOut < tokenIn;
 
-        (amount0Delta, amount1Delta) = IPegasysV2Pool(computePoolAddress(tokenIn, tokenOut, fee)).swap(
+        (amount0Delta, amount1Delta) = IPegasysV3Pool(computePoolAddress(tokenIn, tokenOut, fee)).swap(
             recipient,
             zeroForOne,
             amount,
@@ -174,9 +174,9 @@ abstract contract V2SwapRouter is RouterImmutables, Permit2Payments, IPegasysV2S
                     keccak256(
                         abi.encodePacked(
                             hex'ff',
-                            UNISWAP_V2_FACTORY,
+                            PEGASYS_V3_FACTORY,
                             keccak256(abi.encode(tokenA, tokenB, fee)),
-                            UNISWAP_V2_POOL_INIT_CODE_HASH
+                            PEGASYS_V3_POOL_INIT_CODE_HASH
                         )
                     )
                 )

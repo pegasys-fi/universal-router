@@ -2,8 +2,8 @@
 pragma solidity ^0.8.17;
 
 import {V1SwapRouter} from '../modules/pegasys/v1/V1SwapRouter.sol';
-import {V2SwapRouter} from '../modules/pegasys/v2/V2SwapRouter.sol';
-import {BytesLib} from '../modules/pegasys/v2/BytesLib.sol';
+import {V3SwapRouter} from '../modules/pegasys/v3/V3SwapRouter.sol';
+import {BytesLib} from '../modules/pegasys/v3/BytesLib.sol';
 import {Payments} from '../modules/Payments.sol';
 import {RouterImmutables} from '../base/RouterImmutables.sol';
 import {Callbacks} from '../base/Callbacks.sol';
@@ -17,7 +17,7 @@ import {ICryptoPunksMarket} from '../interfaces/external/ICryptoPunksMarket.sol'
 
 /// @title Decodes and Executes Commands
 /// @notice Called by the UniversalRouter contract to efficiently decode and execute a singular command
-abstract contract Dispatcher is Payments, V1SwapRouter, V2SwapRouter, Callbacks, LockAndMsgSender {
+abstract contract Dispatcher is Payments, V1SwapRouter, V3SwapRouter, Callbacks, LockAndMsgSender {
     using BytesLib for bytes;
 
     error InvalidCommandType(uint256 commandType);
@@ -41,7 +41,7 @@ abstract contract Dispatcher is Payments, V1SwapRouter, V2SwapRouter, Callbacks,
             if (command < Commands.SECOND_IF_BOUNDARY) {
                 // 0x00 <= command < 0x08
                 if (command < Commands.FIRST_IF_BOUNDARY) {
-                    if (command == Commands.V2_SWAP_EXACT_IN) {
+                    if (command == Commands.V3_SWAP_EXACT_IN) {
                         // equivalent: abi.decode(inputs, (address, uint256, uint256, bytes, bool))
                         address recipient;
                         uint256 amountIn;
@@ -56,8 +56,8 @@ abstract contract Dispatcher is Payments, V1SwapRouter, V2SwapRouter, Callbacks,
                         }
                         bytes calldata path = inputs.toBytes(3);
                         address payer = payerIsUser ? lockedBy : address(this);
-                        v2SwapExactInput(map(recipient), amountIn, amountOutMin, path, payer);
-                    } else if (command == Commands.V2_SWAP_EXACT_OUT) {
+                        v3SwapExactInput(map(recipient), amountIn, amountOutMin, path, payer);
+                    } else if (command == Commands.V3_SWAP_EXACT_OUT) {
                         // equivalent: abi.decode(inputs, (address, uint256, uint256, bytes, bool))
                         address recipient;
                         uint256 amountOut;
@@ -72,7 +72,7 @@ abstract contract Dispatcher is Payments, V1SwapRouter, V2SwapRouter, Callbacks,
                         }
                         bytes calldata path = inputs.toBytes(3);
                         address payer = payerIsUser ? lockedBy : address(this);
-                        v2SwapExactOutput(map(recipient), amountOut, amountInMax, path, payer);
+                        v3SwapExactOutput(map(recipient), amountOut, amountInMax, path, payer);
                     } else if (command == Commands.PERMIT2_TRANSFER_FROM) {
                         // equivalent: abi.decode(inputs, (address, address, uint160))
                         address token;
