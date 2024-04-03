@@ -23,9 +23,9 @@ contract DeployRollux is DeployUniversalRouter {
             routerRewardsDistributor: UNSUPPORTED_PROTOCOL,
             looksRareRewardsDistributor: UNSUPPORTED_PROTOCOL,
             looksRareToken: UNSUPPORTED_PROTOCOL,
-            v1Factory: UNSUPPORTED_PROTOCOL,
+            v1Factory: 0x14264CD8fb5F95d551C20E07C738a9281737290c,
             v3Factory: 0xeAa20BEA58979386A7d37BAeb4C1522892c74640,
-            pairInitCodeHash: BYTES32_ZERO,
+            pairInitCodeHash: 0x85c9b07c539b322c33da730d88df8396983c35a411da73d3d6c2278474890833,
             poolInitCodeHash: 0x4a995152ad4a45ce61f15e514146bc642453130f5c3ef14b85098e9c6266c43d
         });
 
